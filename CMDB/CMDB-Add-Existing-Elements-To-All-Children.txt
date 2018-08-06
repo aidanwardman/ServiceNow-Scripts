@@ -1,0 +1,66 @@
+// Elements you want to add to every CI class
+var elements = [
+	{
+		name:'install_status',
+		label:'Status',
+		type:'integer'
+	},
+	{
+		name:'location',
+		label:'Location',
+		type:'reference'
+	},
+	{
+		name:'support_group',
+		label:'Support group',
+		type:'reference'
+	}
+];
+
+// The highest level parent table you wish to start decending downwards from
+var baseTable = "cmdb_ci";
+
+// Searches for every CMDB_CI related UI Section that has no caption
+var gr = new GlideRecord("sys_ui_section");
+gr.addEncodedQuery("nameSTARTSWITH"+baseTable+"^captionISEMPTY");
+gr.query();
+
+// Itterate through each UI Section
+// If the elements already exist, ignore them
+// If not, create the new element and insert it with reference to the UI Section
+while (gr.next()) {
+	for(var i = 0; i < elements.length; i++){
+		if(!exists(gr.sys_id,elements[i].name)){
+			var gr2 = new GlideRecord('sys_ui_element');
+			gr2.initialize(); 
+			gr2.element = elements[i].name; 
+			gr2.sys_ui_section = gr.sys_id; 
+			gr2.position = elementcount(gr.sys_id)+1;
+			gr2.insert();
+			gs.log("UI Element "+elements[i].name+" created on "+gr.sys_id);
+		}else{
+			gs.log("UI Element "+elements[i].name+" already exists on "+gr.sys_id);
+		}
+	}
+}
+
+//gs.cacheFlush();
+
+// Checks if the supplied element already exists for the UI Section
+function exists(id,element){
+	var gr = new GlideRecord("sys_ui_element");
+	gr.addEncodedQuery("sys_ui_section="+id+"^element="+element);
+	gr.query();
+	if(gr.getRowCount() > 0){
+		return true;
+	}
+	return false;
+}
+
+// Returns the count of elements attached to the UI Section for positioning purposes
+function elementcount(id){
+	var gr = new GlideRecord("sys_ui_element");
+	gr.addEncodedQuery("sys_ui_section="+id);
+	gr.query();
+	return gr.getRowCount();
+}
