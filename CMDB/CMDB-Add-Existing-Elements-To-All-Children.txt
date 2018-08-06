@@ -1,26 +1,17 @@
 // Elements you want to add to every CI class
+// (In list of objects for consistency with other CMDB Scripts)
+// Note: these elements should exist on the base table already, to add new elements, please use one of the alternate scripts
 var elements = [
-	{
-		name:'install_status',
-		label:'Status',
-		type:'integer'
-	},
-	{
-		name:'location',
-		label:'Location',
-		type:'reference'
-	},
-	{
-		name:'support_group',
-		label:'Support group',
-		type:'reference'
-	}
+	{name:'install_status'},
+	{name:'location'},
+	{name:'support_group'}
 ];
 
 // The highest level parent table you wish to start decending downwards from
+// eg. cmdb_ci / cmdb_ci_hardware
 var baseTable = "cmdb_ci";
 
-// Searches for every CMDB_CI related UI Section that has no caption
+// Searches for every base table related UI Section that has no caption
 var gr = new GlideRecord("sys_ui_section");
 gr.addEncodedQuery("nameSTARTSWITH"+baseTable+"^captionISEMPTY");
 gr.query();
