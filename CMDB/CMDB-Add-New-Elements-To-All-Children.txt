@@ -46,6 +46,8 @@ while (gr.next()) {
 	}
 }
 
+gs.cacheFlush();
+
 // Checks if the supplied element already exists for the UI Section
 function existsDict(label,type){
 	var gr = new GlideRecord("sys_dictionary");
