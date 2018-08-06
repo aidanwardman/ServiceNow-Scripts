@@ -44,7 +44,7 @@ while (gr.next()) {
 	}
 }
 
-//gs.cacheFlush();
+gs.cacheFlush();
 
 // Checks if the supplied element already exists for the UI Section
 function exists(id,element){
