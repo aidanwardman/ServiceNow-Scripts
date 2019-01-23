@@ -16,4 +16,4 @@ The JSONP Wrapper is required for the Stream Deck plugin to be able to work with
 
 Instructions on how to make a page public in your instance can also be found at [Making a Page Public](http://wiki.servicenow.com/index.php?title=Making_a_Page_Public)
 
-[[preview.PNG|alt=ServiceNow Stream Deck Preview]]
+![ServiceNow Stream Deck Preview](preview.PNG)
