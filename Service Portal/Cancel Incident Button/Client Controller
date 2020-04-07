@@ -1,0 +1,29 @@
+function($uibModal, $scope, spUtil) {
+	spUtil.recordWatch($scope, $scope.data.table, "sys_id=" + $scope.data.sys_id); 
+	
+	var c = this;
+	c.uiAction = function(action) {
+		c.data.action = action;
+		c.data.reason = cancelComment.value;
+		c.data.reasonEmpty = false;
+		if(c.data.reason && c.data.reason != ""){
+			c.server.update().then(function() {
+				c.data.action = undefined;
+				c.cancelIncidentModalInstance.close();
+			});
+		}else{
+			c.data.reasonEmpty = true;
+		}
+	};
+	
+	c.openCancelModal = function() {
+		c.cancelIncidentModalInstance = $uibModal.open({
+			templateUrl: 'cancelModalTemplate',
+			scope: $scope
+		});
+	}
+
+	c.closeCancelModal = function() {
+		c.cancelIncidentModalInstance.close();
+	}
+}

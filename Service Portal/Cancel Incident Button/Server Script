@@ -1,0 +1,45 @@
+(function() {
+	// Get table & sys_id
+	var gr = $sp.getRecord();
+	data.table = gr.getTableName();
+	data.sys_id = gr.getUniqueValue();
+	data.reasonEmpty = false;
+	
+	if (gr == null)
+		return;
+	
+	data.canRead = gr.canRead();
+	if (!data.canRead) 
+		return;
+
+	// Get current user
+	data.userID = gs.getUserID();
+
+	// Check if user is the caller
+	data.isCaller = data.userID == gr.getValue("caller_id");
+	
+	// Check the ticket state
+	data.notResolved = gr.getValue("state") != 6;
+	data.notClosed = gr.getValue("state") != 7;
+	data.notCancelled = gr.getValue("state") != 8;
+
+	// Handle any actions
+	if (input && input.action) {
+		var action = input.action;
+
+		// If Incident table
+		if (data.table == 'incident') {
+			if (action == 'cancel' && input.reason != "") {
+				// Cancel Incident
+				gr.setValue('state', 8);
+				gr.setValue('resolved_by', gs.getUserID());
+				gr.setValue('resolved_at', gs.nowDateTime());
+				gr.setValue('close_code', "Closed/Resolved by Caller");
+				gr.setValue('close_notes', input.reason);
+				gr.update();
+				data.notCancelled = gr.getValue("state") != 8;
+			}
+		}
+	}
+
+})();

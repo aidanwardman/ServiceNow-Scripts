@@ -1,0 +1,22 @@
+<div class="panel panel-default" ng-if="c.data.notResolved && c.data.notClosed && c.data.notCancelled && c.data.isCaller">
+  <div class="panel-heading">Actions</div>
+  <div class="panel-body">
+    <button type="button" class="btn btn-primary btn-block" ng-click="c.openCancelModal()">Cancel Incident</button>
+  </div>
+</div>
+
+<script type="text/ng-template" id="cancelModalTemplate">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h4 class="panel-title">Cancel Incident</h4>
+		</div>
+        <div class="panel-body">
+			<textarea placeholder="Incident cancellation reason..." id="cancelComment" name="cancelComment" class="form-control" rows="2" required></textarea>
+            <span style="color:#f00;" ng-if="c.data.reasonEmpty">Please provide a cancellation reason above.</span>
+        </div>
+        <div class="panel-footer text-right">
+        	<button class="btn btn-default" ng-click="c.closeCancelModal()">${Close}</button>
+			<button class="btn btn-primary" ng-click="c.uiAction('cancel')">${Cancel Incident}</button>
+		</div>
+	</div>
+</script>
